@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ListenTube - YouTube 音频下载器</title>
+    
+    <!-- PWA 相关 meta 标签 -->
+    <meta name="theme-color" content="#4CAF50">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ListenTube">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- iOS 图标 -->
+    <link rel="apple-touch-icon" href="/icon-192.png">
+    
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1><i class="fas fa-music"></i> ListenTube</h1>
+            <p>YouTube 视频转音频下载器</p>
+        </header>
+
+        <main class="main">
+            <!-- 异步下载区域 -->
+            <section class="async-download">
+                <h2><i class="fas fa-download"></i> 创建下载任务</h2>
+                <div class="input-group">
+                    <input type="url" id="asyncUrl" placeholder="粘贴 YouTube 视频链接..." class="url-input">
+                    <select id="asyncFormat" class="format-select">
+                        <option value="mp3">MP3</option>
+                        <option value="m4a">M4A</option>
+                        <option value="opus">Opus</option>
+                    </select>
+                </div>
+                <button id="createTaskBtn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> 创建任务
+                </button>
+            </section>
+
+            <!-- 任务列表 -->
+            <section class="task-list" id="taskList" style="display: none;">
+                <h2><i class="fas fa-list"></i> 下载任务</h2>
+                <div id="tasksContainer"></div>
+            </section>
+
+            <!-- 状态提示 -->
+            <div id="statusMessage" class="status-message" style="display: none;"></div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 ListenTube Server</p>
+        </footer>
+    </div>
+
+    <!-- 加载指示器 -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>处理中...</p>
+    </div>
+
+    <script src="script.js"></script>
+    
+    <!-- PWA Service Worker 注册 -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((registration) => {
+                        console.log('Service Worker 注册成功:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('Service Worker 注册失败:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html> 
