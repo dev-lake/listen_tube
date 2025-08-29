@@ -449,5 +449,6 @@ _janitor.start()
 
 
 if __name__ == "__main__":
-    # Example: python app.py -> http://127.0.0.1:5000/download?url=...&format=mp3
-    app.run(host="0.0.0.0", port=9000) 
+    # 支持 Cloud Run 的 PORT 环境变量
+    port = int(os.environ.get("PORT", 9000))
+    app.run(host="0.0.0.0", port=port) 

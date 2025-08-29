@@ -1,4 +1,4 @@
-# 使用官方 Python 3.11 作为基础镜像
+# Google Cloud Run 专用 Dockerfile
 FROM python:3.11-slim
 
 # 设置环境变量
@@ -17,7 +17,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# 安装 FFmpeg（使用更简单的方式）
+# 安装 FFmpeg
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         ffmpeg \
@@ -35,7 +35,7 @@ RUN useradd --create-home --shell /bin/bash app && \
 # 切换到非 root 用户
 USER app
 
-# 暴露端口（支持 Cloud Run 的 PORT 环境变量）
+# 暴露端口（Cloud Run 要求）
 EXPOSE 8080
 
 # 启动命令
