@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  listentube:
+    build: .
+    ports:
+      - "9000:9000"
+    environment:
+      - FLASK_ENV=production
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # 可选：挂载日志目录
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    # 资源限制
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+          cpus: "1.0"
+        reservations:
+          memory: 512M
+          cpus: "0.5"
+
+  # 开发环境配置
+  listentube-dev:
+    build: .
+    ports:
+      - "9001:9000"
+    environment:
+      - FLASK_ENV=development
+      - PYTHONUNBUFFERED=1
+    volumes:
+      # 开发时挂载源代码，支持热重载
+      - .:/app
+      - ./logs:/app/logs
+    restart: unless-stopped
+    profiles:
+      - dev
